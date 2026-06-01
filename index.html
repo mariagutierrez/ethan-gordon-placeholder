@@ -166,7 +166,9 @@
     .domains .sep,
     .year { color: var(--text); opacity: var(--subtle); }
 
-    #lang-toggle {
+    .lang-switcher { display: flex; align-items: center; }
+
+    .lang {
       background: none;
       border: none;
       cursor: pointer;
@@ -180,7 +182,8 @@
       transition: opacity 0.2s;
     }
 
-    #lang-toggle:hover { opacity: 1; }
+    .lang:hover  { opacity: 0.8; }
+    .lang.active { opacity: 1; font-weight: 700; }
 
     .domains a { text-decoration: none; }
     .domains a:hover { opacity: 1; }
@@ -238,7 +241,11 @@
         <a href="https://ethan.art">ethan.art</a>
       </div>
       <span class="year">© 2026</span>
-      <button id="lang-toggle" aria-label="Switch language">EN</button>
+      <div class="lang-switcher">
+        <button data-lang="en" class="lang active">EN</button>
+        <span class="sep">/</span>
+        <button data-lang="es" class="lang">ES</button>
+      </div>
     </div>
   </div>
 
@@ -273,10 +280,10 @@
       ],
     };
 
-    const tagEl     = document.getElementById('tagline');
-    const toggleBtn = document.getElementById('lang-toggle');
-    let lang        = 'en';
-    let lineIndex   = 0;
+    const tagEl   = document.getElementById('tagline');
+    const langBtns = document.querySelectorAll('.lang');
+    let lang      = 'en';
+    let lineIndex = 0;
 
     function setLine(index, animate = false) {
       if (animate) tagEl.classList.add('fading');
@@ -291,11 +298,14 @@
       setLine(lineIndex, true);
     }
 
-    toggleBtn.addEventListener('click', () => {
-      lang = lang === 'en' ? 'es' : 'en';
-      toggleBtn.textContent = lang === 'en' ? 'EN' : 'ES';
-      lineIndex = 0;
-      setLine(lineIndex, true);
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.lang === lang) return;
+        lang = btn.dataset.lang;
+        langBtns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+        lineIndex = 0;
+        setLine(lineIndex, true);
+      });
     });
 
     setInterval(cycleTagline, 4000);
