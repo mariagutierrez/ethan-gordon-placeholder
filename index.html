@@ -114,8 +114,9 @@
     }
 
     .domains { display: flex; flex-wrap: wrap; align-items: center; }
-    .domains span { color: var(--text); opacity: 0.55; }
-    .domains .sep  { opacity: 0.55; margin: 0 8px; }
+    .domains a, .domains span { color: var(--text); opacity: 0.55; text-decoration: none; }
+    .domains a:hover { opacity: 1; }
+    .domains .sep { opacity: 0.55; margin: 0 8px; }
     .year { color: var(--text); opacity: 0.55; }
 
     .tiktok {
@@ -159,11 +160,11 @@
 
     <div class="bottom">
       <div class="domains">
-        <span>ethangordon.ai</span><span class="sep">/</span>
-        <span>ethangordon.art</span><span class="sep">/</span>
-        <span>ethangordon.me</span><span class="sep">/</span>
-        <span>ethanjgordon.com</span><span class="sep">/</span>
-        <span>ethan.art</span>
+        <a href="https://ethangordon.ai">ethangordon.ai</a><span class="sep">/</span>
+        <a href="https://ethangordon.art">ethangordon.art</a><span class="sep">/</span>
+        <a href="https://ethangordon.me">ethangordon.me</a><span class="sep">/</span>
+        <a href="https://ethanjgordon.com">ethanjgordon.com</a><span class="sep">/</span>
+        <a href="https://ethan.art">ethan.art</a>
       </div>
       <span class="year">© 2026</span>
     </div>
