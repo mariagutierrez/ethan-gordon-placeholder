@@ -166,6 +166,22 @@
     .domains .sep,
     .year { color: var(--text); opacity: var(--subtle); }
 
+    #lang-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: clamp(10px, 1.3vw, 13px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+      opacity: var(--subtle);
+      padding: 0;
+      transition: opacity 0.2s;
+    }
+
+    #lang-toggle:hover { opacity: 1; }
+
     .domains a { text-decoration: none; }
     .domains a:hover { opacity: 1; }
     .domains .sep { margin: 0 8px; }
@@ -222,6 +238,7 @@
         <a href="https://ethan.art">ethan.art</a>
       </div>
       <span class="year">© 2026</span>
+      <button id="lang-toggle" aria-label="Switch language">EN</button>
     </div>
   </div>
 
@@ -229,30 +246,57 @@
     // Rotating taglines — cycle every 4s with a fade transition.
     // Timeout (450ms) > transition duration (400ms) so text updates
     // while the element is fully transparent.
-    const lines = [
-      'Making something new.',
-      'Building what\'s next.',
-      'Something worth waiting for.',
-      'Not yet. But soon.',
-      'Good things take time.',
-      'Watch this space.',
-      'Doing the work.',
-      'Worth the wait.',
-      'Almost ready.',
-      'In progress.',
-    ];
+    const taglines = {
+      en: [
+        'Making something new.',
+        'Building what\'s next.',
+        'Something worth waiting for.',
+        'Not yet. But soon.',
+        'Good things take time.',
+        'Watch this space.',
+        'Doing the work.',
+        'Worth the wait.',
+        'Almost ready.',
+        'In progress.',
+      ],
+      es: [
+        'Creando algo nuevo.',
+        'Construyendo lo que viene.',
+        'Algo que vale la pena esperar.',
+        'Todavía no. Pero pronto.',
+        'Las cosas buenas llevan su tiempo.',
+        'Aquí está pasando algo.',
+        'Trabajando en ello.',
+        'Vale la pena.',
+        'Casi listo.',
+        'En progreso.',
+      ],
+    };
 
-    const tagEl = document.getElementById('tagline');
-    let lineIndex = 0;
+    const tagEl     = document.getElementById('tagline');
+    const toggleBtn = document.getElementById('lang-toggle');
+    let lang        = 'en';
+    let lineIndex   = 0;
+
+    function setLine(index, animate = false) {
+      if (animate) tagEl.classList.add('fading');
+      setTimeout(() => {
+        tagEl.textContent = taglines[lang][index];
+        tagEl.classList.remove('fading');
+      }, animate ? 450 : 0); // must exceed the CSS transition duration (0.4s = 400ms)
+    }
 
     function cycleTagline() {
-      tagEl.classList.add('fading');
-      setTimeout(() => {
-        lineIndex = (lineIndex + 1) % lines.length;
-        tagEl.textContent = lines[lineIndex];
-        tagEl.classList.remove('fading');
-      }, 450); // must exceed the CSS transition duration (0.4s = 400ms)
+      lineIndex = (lineIndex + 1) % taglines[lang].length;
+      setLine(lineIndex, true);
     }
+
+    toggleBtn.addEventListener('click', () => {
+      lang = lang === 'en' ? 'es' : 'en';
+      toggleBtn.textContent = lang === 'en' ? 'EN' : 'ES';
+      lineIndex = 0;
+      setLine(lineIndex, true);
+    });
 
     setInterval(cycleTagline, 4000);
   </script>
