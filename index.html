@@ -80,7 +80,12 @@
       .b5 { background: #c48f8f; }
     }
 
-    [data-theme="dark"] .blob { opacity: 0.35; }
+    [data-theme="dark"] .blob  { opacity: 0.35; }
+    [data-theme="dark"] #theme-toggle { opacity: 0.8; }
+
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) #theme-toggle { opacity: 0.8; }
+    }
     [data-theme="dark"] .b1 { background: #041556; }
     [data-theme="dark"] .b2 { background: #748dc6; }
     [data-theme="dark"] .b3 { background: #c3e8ff; }
@@ -212,7 +217,7 @@
     }
 
     #theme-toggle:hover { opacity: 1; }
-    #theme-toggle svg { transition: transform 0.3s ease; }
+    #theme-toggle svg { transition: transform 0.3s ease; stroke: var(--text); }
     #theme-toggle:hover svg { transform: rotate(20deg); }
 
     /* ── TikTok icon (inline, after ethan.art) ── */
