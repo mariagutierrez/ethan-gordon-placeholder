@@ -240,17 +240,20 @@
     #theme-toggle svg { transition: transform 0.3s ease; stroke: var(--text); }
     #theme-toggle:hover svg { transform: rotate(20deg); }
 
-    /* ── TikTok icon (inline, after ethan.art) ── */
-    .tiktok-inline {
-      display: inline-flex;
+    /* ── TikTok icon (fixed, bottom-right) ── */
+    .tiktok-fixed {
+      position: fixed;
+      bottom: var(--pad);
+      right: var(--pad);
+      display: flex;
       align-items: center;
       opacity: var(--subtle);
       transition: opacity 0.2s;
+      z-index: 2;
     }
 
-    .tiktok-inline:hover { opacity: 1; }
-
-    .tiktok-inline path { fill: var(--text); }
+    .tiktok-fixed:hover { opacity: 1; }
+    .tiktok-fixed path  { fill: var(--text); }
   </style>
 </head>
 <body>
@@ -279,6 +282,13 @@
     </button>
   </div>
 
+  <!-- TikTok link (fixed, bottom-right) -->
+  <a href="https://tiktok.com/@eg.1230" target="_blank" rel="noopener" aria-label="TikTok" class="tiktok-fixed">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+    </svg>
+  </a>
+
   <!-- Animated colour blobs (rainbow, behind everything) -->
   <div class="blobs">
     <div class="blob b1"></div>
@@ -299,12 +309,7 @@
         <a href="https://ethangordon.art">ethangordon.art</a><span class="sep">/</span>
         <a href="https://ethangordon.me">ethangordon.me</a><span class="sep">/</span>
         <a href="https://ethanjgordon.com">ethanjgordon.com</a><span class="sep">/</span>
-        <a href="https://ethan.art">ethan.art</a><span class="sep">/</span>
-        <a href="https://tiktok.com/@eg.1230" target="_blank" rel="noopener" aria-label="TikTok" class="tiktok-inline">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
-          </svg>
-        </a>
+        <a href="https://ethan.art">ethan.art</a>
       </div>
     </div>
   </div>
