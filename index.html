@@ -171,6 +171,11 @@
 
     .domains { display: flex; flex-wrap: wrap; align-items: center; }
 
+    @media (max-width: 640px) {
+      .domains { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .domains .sep { display: none; }
+    }
+
     .domains a,
     .domains .sep { color: var(--text); opacity: var(--subtle); }
 
