@@ -70,9 +70,22 @@
       filter: blur(60px);
     }
 
+    /* Dark mode blob colours */
     @media (prefers-color-scheme: dark) {
-      .blob { opacity: 0.2; }
+      .blob { opacity: 0.35; }
+      .b1 { background: #041556; }
+      .b2 { background: #748dc6; }
+      .b3 { background: #c3e8ff; }
+      .b4 { background: #601414; }
+      .b5 { background: #c48f8f; }
     }
+
+    [data-theme="dark"] .blob { opacity: 0.35; }
+    [data-theme="dark"] .b1 { background: #041556; }
+    [data-theme="dark"] .b2 { background: #748dc6; }
+    [data-theme="dark"] .b3 { background: #c3e8ff; }
+    [data-theme="dark"] .b4 { background: #601414; }
+    [data-theme="dark"] .b5 { background: #c48f8f; }
 
     @keyframes drift1 {
       0%, 100% { transform: translate(0,    0   ) scale(1);    }
@@ -184,11 +197,10 @@
       position: fixed;
       top: var(--pad);
       right: var(--pad);
-      width: 36px;
-      height: 20px;
+      width: 32px;
+      height: 32px;
       background: none;
-      border: 1px solid var(--text);
-      border-radius: 99px;
+      border: none;
       cursor: pointer;
       padding: 0;
       opacity: var(--subtle);
@@ -196,30 +208,12 @@
       z-index: 2;
       display: flex;
       align-items: center;
-      padding: 0 3px;
+      justify-content: center;
     }
 
     #theme-toggle:hover { opacity: 1; }
-
-    #theme-toggle::after {
-      content: '';
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--text);
-      transition: transform 0.25s ease;
-    }
-
-    [data-theme="dark"] #theme-toggle::after,
-    html:not([data-theme]) #theme-toggle::after {
-      transform: translateX(16px);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) #theme-toggle::after {
-        transform: translateX(16px);
-      }
-    }
+    #theme-toggle svg { transition: transform 0.3s ease; }
+    #theme-toggle:hover svg { transform: rotate(20deg); }
 
     /* ── TikTok icon (inline, after ethan.art) ── */
     .tiktok-inline {
@@ -236,8 +230,25 @@
 </head>
 <body>
 
-  <!-- Theme toggle -->
-  <button id="theme-toggle" aria-label="Toggle dark mode"></button>
+  <!-- Theme toggle: shows sun in light mode, moon in dark mode -->
+  <button id="theme-toggle" aria-label="Toggle dark mode">
+    <!-- Sun (shown in light mode) -->
+    <svg id="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <line x1="12" y1="2"  x2="12" y2="5"/>
+      <line x1="12" y1="19" x2="12" y2="22"/>
+      <line x1="2"  y1="12" x2="5"  y2="12"/>
+      <line x1="19" y1="12" x2="22" y2="12"/>
+      <line x1="4.22"  y1="4.22"  x2="6.34"  y2="6.34"/>
+      <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+      <line x1="4.22"  y1="19.78" x2="6.34"  y2="17.66"/>
+      <line x1="17.66" y1="6.34"  x2="19.78" y2="4.22"/>
+    </svg>
+    <!-- Moon (shown in dark mode) -->
+    <svg id="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+    </svg>
+  </button>
 
   <!-- Animated colour blobs (rainbow, behind everything) -->
   <div class="blobs">
@@ -336,8 +347,10 @@
     setInterval(cycleTagline, 4000);
 
     // Theme toggle — respects OS default, overrides on click
-    const html        = document.documentElement;
-    const themeToggle = document.getElementById('theme-toggle');
+    const html          = document.documentElement;
+    const themeToggle   = document.getElementById('theme-toggle');
+    const iconSun       = document.getElementById('icon-sun');
+    const iconMoon      = document.getElementById('icon-moon');
     const osPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     function isDark() {
@@ -345,8 +358,16 @@
       return t ? t === 'dark' : osPrefersDark;
     }
 
+    function updateIcon() {
+      iconSun.style.display  = isDark() ? 'none'  : 'block';
+      iconMoon.style.display = isDark() ? 'block' : 'none';
+    }
+
+    updateIcon(); // set correct icon on load
+
     themeToggle.addEventListener('click', () => {
       html.dataset.theme = isDark() ? 'light' : 'dark';
+      updateIcon();
     });
   </script>
 </body>
