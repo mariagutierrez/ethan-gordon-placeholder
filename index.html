@@ -14,17 +14,17 @@
 
     /* ── Tokens ── */
     :root {
-      --bg:      #faf8f5;
-      --text:    #111;
-      --subtle:  0.55;   /* opacity for secondary elements */
-      --pad:     clamp(28px, 5vw, 72px);
+      --bg:     #faf8f5;
+      --text:   #111;
+      --subtle: 0.55;   /* opacity for secondary elements */
+      --pad:    clamp(28px, 5vw, 72px);
     }
 
+    /* OS dark mode default; manual [data-theme] overrides below */
     @media (prefers-color-scheme: dark) {
       :root { --bg: #0f0e0c; --text: #f0ede8; }
     }
 
-    /* Manual override takes precedence over OS setting */
     [data-theme="light"] { --bg: #faf8f5; --text: #111; }
     [data-theme="dark"]  { --bg: #0f0e0c; --text: #f0ede8; }
 
@@ -52,9 +52,8 @@
     }
 
     /* ── Colour blobs ─────────────────────────────────────────
-       7 blurred circles (rainbow) that drift and breathe.
-       Each blob uses its own @keyframes so movement is
-       independent and never looks synchronised.
+       5 blurred ellipses that drift independently.
+       Light palette: warm neutrals. Dark palette: navy/burgundy.
     ── */
     .blobs {
       position: fixed;
@@ -70,27 +69,29 @@
       filter: blur(60px);
     }
 
+    /* Light mode blob colours (default) */
+    .b1 { width:55vw; height:45vw; background:#3e5172; top:-8%;    right:5%;   animation: drift1 11s ease-in-out infinite; } /* navy       */
+    .b2 { width:48vw; height:44vw; background:#f9b49b; top:5%;     left:30%;   animation: drift2 13s ease-in-out infinite; } /* salmon     */
+    .b3 { width:50vw; height:38vw; background:#9fb6c3; top:-5%;    left:-5%;   animation: drift3 12s ease-in-out infinite; } /* dusty blue */
+    .b4 { width:44vw; height:52vw; background:#f9e9de; top:35%;    left:-8%;   animation: drift4 14s ease-in-out infinite; } /* blush      */
+    .b5 { width:52vw; height:40vw; background:#cc6c5c; bottom:-4%; left:20%;   animation: drift5 12s ease-in-out infinite; } /* terracotta */
+
     /* Dark mode blob colours */
     @media (prefers-color-scheme: dark) {
       .blob { opacity: 0.35; }
-      .b1 { background: #041556; }
-      .b2 { background: #748dc6; }
-      .b3 { background: #c3e8ff; }
-      .b4 { background: #601414; }
-      .b5 { background: #c48f8f; }
+      .b1   { background: #041556; }
+      .b2   { background: #748dc6; }
+      .b3   { background: #c3e8ff; }
+      .b4   { background: #601414; }
+      .b5   { background: #c48f8f; }
     }
 
     [data-theme="dark"] .blob { opacity: 0.35; }
-    [data-theme="dark"] .settings { opacity: 0.85; }
-
-    @media (prefers-color-scheme: dark) {
-      html:not([data-theme="light"]) .settings { opacity: 0.85; }
-    }
-    [data-theme="dark"] .b1 { background: #041556; }
-    [data-theme="dark"] .b2 { background: #748dc6; }
-    [data-theme="dark"] .b3 { background: #c3e8ff; }
-    [data-theme="dark"] .b4 { background: #601414; }
-    [data-theme="dark"] .b5 { background: #c48f8f; }
+    [data-theme="dark"] .b1   { background: #041556; }
+    [data-theme="dark"] .b2   { background: #748dc6; }
+    [data-theme="dark"] .b3   { background: #c3e8ff; }
+    [data-theme="dark"] .b4   { background: #601414; }
+    [data-theme="dark"] .b5   { background: #c48f8f; }
 
     @keyframes drift1 {
       0%, 100% { transform: translate(0,    0   ) scale(1);    }
@@ -117,12 +118,6 @@
       33%       { transform: translate(-6vw, -7vh) scale(1.1); }
       66%       { transform: translate(7vw,  5vh ) scale(0.9); }
     }
-    /* Blob positions, sizes and colours */
-    .b1 { width:55vw; height:45vw; background:#3e5172; top:-8%;   right:5%;   animation: drift1 11s ease-in-out infinite; } /* navy       */
-    .b2 { width:48vw; height:44vw; background:#f9b49b; top:5%;    left:30%;   animation: drift2 13s ease-in-out infinite; } /* salmon     */
-    .b3 { width:50vw; height:38vw; background:#9fb6c3; top:-5%;   left:-5%;   animation: drift3 12s ease-in-out infinite; } /* dusty blue */
-    .b4 { width:44vw; height:52vw; background:#f9e9de; top:35%;   left:-8%;   animation: drift4 14s ease-in-out infinite; } /* blush      */
-    .b5 { width:52vw; height:40vw; background:#cc6c5c; bottom:-4%; left:20%;  animation: drift5 12s ease-in-out infinite; } /* terracotta */
 
     /* ── Page layout ── */
     .page {
@@ -136,8 +131,8 @@
 
     /* ── Tagline ──
        Fades between lines via JS — transition duration (0.4s)
-       must be shorter than the JS timeout (450ms) so the new
-       text is set while the element is fully invisible.
+       must be shorter than the JS timeout (450ms) so text updates
+       while the element is fully transparent.
     ── */
     #tagline {
       flex: 1;
@@ -151,7 +146,6 @@
       line-height: 1.08;
       letter-spacing: -0.02em;
       max-width: 16ch;
-      opacity: 1;
       transition: opacity 0.4s ease;
     }
 
@@ -171,36 +165,17 @@
 
     .domains { display: flex; flex-wrap: wrap; align-items: center; }
 
-    @media (max-width: 640px) {
-      .domains { flex-direction: column; align-items: flex-start; gap: 4px; }
-      .domains .sep { display: none; }
-    }
-
     .domains a,
     .domains .sep { color: var(--text); opacity: var(--subtle); }
 
-    .lang-switcher { display: flex; align-items: center; }
+    .domains a          { text-decoration: none; }
+    .domains a:hover    { opacity: 1; }
+    .domains .sep       { margin: 0 8px; }
 
-    .lang {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: clamp(10px, 1.3vw, 13px);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text);
-      opacity: var(--subtle);
-      padding: 0;
-      transition: opacity 0.2s;
+    @media (max-width: 640px) {
+      .domains            { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .domains .sep       { display: none; }
     }
-
-    .lang:hover  { opacity: 0.8; }
-    .lang.active { opacity: 1; font-weight: 700; }
-
-    .domains a { text-decoration: none; }
-    .domains a:hover { opacity: 1; }
-    .domains .sep { margin: 0 8px; }
 
     /* ── Settings bar (top-right, fixed) ── */
     .settings {
@@ -211,17 +186,32 @@
       align-items: center;
       gap: 6px;
       z-index: 2;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: clamp(10px, 1.3vw, 13px);
       letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
-    .settings-sep {
+    .settings-sep { color: var(--text); opacity: 0.25; }
+
+    /* Lang buttons */
+    .lang {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
       color: var(--text);
-      opacity: 0.25;
+      opacity: var(--subtle);
+      padding: 0;
+      transition: opacity 0.2s;
     }
 
+    .lang:hover  { opacity: 0.8; }
+    .lang.active { opacity: 1; font-weight: 700; }
+
+    /* Theme toggle button */
     #theme-toggle {
       width: 28px;
       height: 28px;
@@ -236,9 +226,15 @@
       justify-content: center;
     }
 
-    #theme-toggle:hover { opacity: 1; }
-    #theme-toggle svg { transition: transform 0.3s ease; stroke: var(--text); }
+    #theme-toggle:hover     { opacity: 1; }
+    #theme-toggle svg       { transition: transform 0.3s ease; stroke: var(--text); }
     #theme-toggle:hover svg { transform: rotate(20deg); }
+
+    /* Boost icon visibility in dark mode */
+    [data-theme="dark"] .settings,
+    @media (prefers-color-scheme: dark) {
+      html:not([data-theme="light"]) .settings { opacity: 0.85; }
+    }
 
     /* ── TikTok icon (fixed, bottom-right) ── */
     .tiktok-fixed {
@@ -258,14 +254,15 @@
 </head>
 <body>
 
-  <!-- Settings bar: language + theme toggle -->
+  <!-- Settings bar: language toggle + theme toggle -->
   <div class="settings">
     <button data-lang="en" class="lang active">EN</button>
     <span class="settings-sep">/</span>
     <button data-lang="es" class="lang">ES</button>
     <span class="settings-sep">·</span>
     <button id="theme-toggle" aria-label="Toggle dark mode">
-      <svg id="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Sun icon (light mode) -->
+      <svg id="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="4"/>
         <line x1="12" y1="2"  x2="12" y2="5"/>
         <line x1="12" y1="19" x2="12" y2="22"/>
@@ -276,7 +273,8 @@
         <line x1="4.22"  y1="19.78" x2="6.34"  y2="17.66"/>
         <line x1="17.66" y1="6.34"  x2="19.78" y2="4.22"/>
       </svg>
-      <svg id="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+      <!-- Moon icon (dark mode) -->
+      <svg id="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
         <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
       </svg>
     </button>
@@ -289,7 +287,7 @@
     </svg>
   </a>
 
-  <!-- Animated colour blobs (rainbow, behind everything) -->
+  <!-- Colour blobs (behind everything) -->
   <div class="blobs">
     <div class="blob b1"></div>
     <div class="blob b2"></div>
@@ -297,7 +295,6 @@
     <div class="blob b4"></div>
     <div class="blob b5"></div>
   </div>
-
 
   <!-- Main content -->
   <div class="page">
@@ -315,9 +312,9 @@
   </div>
 
   <script>
-    // Rotating taglines — cycle every 4s with a fade transition.
-    // Timeout (450ms) > transition duration (400ms) so text updates
-    // while the element is fully transparent.
+    // ── Taglines ──────────────────────────────────────────────
+    // Cycle every 4s with a fade. Timeout (450ms) > transition
+    // duration (400ms) so text updates while fully transparent.
     const taglines = {
       en: [
         'Making something new.',
@@ -345,17 +342,17 @@
       ],
     };
 
-    const tagEl   = document.getElementById('tagline');
+    const tagEl    = document.getElementById('tagline');
     const langBtns = document.querySelectorAll('.lang');
-    let lang      = 'en';
-    let lineIndex = 0;
+    let lang       = 'en';
+    let lineIndex  = 0;
 
     function setLine(index, animate = false) {
       if (animate) tagEl.classList.add('fading');
       setTimeout(() => {
         tagEl.textContent = taglines[lang][index];
         tagEl.classList.remove('fading');
-      }, animate ? 450 : 0); // must exceed the CSS transition duration (0.4s = 400ms)
+      }, animate ? 450 : 0);
     }
 
     function cycleTagline() {
@@ -375,7 +372,9 @@
 
     setInterval(cycleTagline, 4000);
 
-    // Theme toggle — respects OS default, overrides on click
+    // ── Theme toggle ─────────────────────────────────────────
+    // Reads OS preference by default; overrides on click via
+    // data-theme attribute on <html>.
     const html          = document.documentElement;
     const themeToggle   = document.getElementById('theme-toggle');
     const iconSun       = document.getElementById('icon-sun');
@@ -392,7 +391,7 @@
       iconMoon.style.display = isDark() ? 'block' : 'none';
     }
 
-    updateIcon(); // set correct icon on load
+    updateIcon(); // initialise correct icon on load
 
     themeToggle.addEventListener('click', () => {
       html.dataset.theme = isDark() ? 'light' : 'dark';
